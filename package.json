@@ -1,0 +1,42 @@
+{
+  "name": "jest-decorators",
+  "version": "0.1.0",
+  "description": "A group of class decorators to provide declarative testing based on jest",
+  "main": "dist/jest-decorators.js",
+  "engines": {
+    "node": ">=10.15.3"
+  },
+  "keywords": [
+    "jest",
+    "decorator"
+  ],
+  "author": {
+    "name": "Wang Tong",
+    "email": "itulayangi@outlook.com"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/WebshipIO/jest-decorators/LICENSE"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WebshipIO/jest-decorators.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "gulp build"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "gulp": "^4.0.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^5.0.1",
+    "jest": "^24.5.0",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^24.0.1",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+  }
+}
