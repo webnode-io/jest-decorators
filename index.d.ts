@@ -1,4 +1,4 @@
-declare namespace Webship {
+declare namespace WebNode {
   export type ClassType<T=any> = new(...args: any[]) => T
   export type ClassTypeDecorator<T=any> = (target: ClassType<T>) => ClassType<T>
 
@@ -17,4 +17,4 @@ declare namespace Webship {
   export function Test(target: Object, propertyKey: string, descriptor: PropertyDescriptor): void
 }
 
-export = Webship
+export = WebNode
