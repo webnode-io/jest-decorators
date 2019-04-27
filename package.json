@@ -16,11 +16,11 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/webship-io/jest-decorators/LICENSE"
+    "url": "https://github.com/webnode-io/jest-decorators/LICENSE"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/webship-io/jest-decorators.git"
+    "url": "https://github.com/webnode-io/jest-decorators.git"
   },
   "scripts": {
     "test": "jest",
