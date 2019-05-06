@@ -4,6 +4,10 @@ class TestSuite {
     constructor(classType) {
         this.classType = classType;
         this.tests = [];
+        this.beforeEach = [];
+        this.afterEach = [];
+        this.beforeAll = [];
+        this.afterAll = [];
         this.instance = new classType();
     }
     getClassType() {
@@ -15,31 +19,31 @@ class TestSuite {
     addTest(description, methodName) {
         this.tests.push([description, methodName]);
     }
-    setBeforeEach(methodName) {
-        this.beforeEach = methodName;
+    addBeforeEach(methodName) {
+        this.beforeEach.push(methodName);
     }
-    setAfterEach(methodName) {
-        this.afterEach = methodName;
+    addAfterEach(methodName) {
+        this.afterEach.push(methodName);
     }
-    setBeforeAll(methodName) {
-        this.beforeAll = methodName;
+    addBeforeAll(methodName) {
+        this.beforeAll.push(methodName);
     }
-    setAfterAll(methodName) {
-        this.afterAll = methodName;
+    addAfterAll(methodName) {
+        this.afterAll.push(methodName);
     }
     exec() {
         describe(this.description, () => {
-            if (this.beforeAll !== undefined) {
-                beforeAll(this.instance[this.beforeAll].bind(this.instance));
+            for (let cb of this.beforeAll) {
+                beforeAll(this.instance[cb].bind(this.instance));
             }
-            if (this.afterAll !== undefined) {
-                afterAll(this.instance[this.afterAll].bind(this.instance));
+            for (let cb of this.afterAll) {
+                afterAll(this.instance[cb].bind(this.instance));
             }
-            if (this.beforeEach !== undefined) {
-                beforeEach(this.instance[this.beforeEach].bind(this.instance));
+            for (let cb of this.beforeEach) {
+                beforeEach(this.instance[cb].bind(this.instance));
             }
-            if (this.afterEach !== undefined) {
-                afterEach(this.instance[this.afterEach].bind(this.instance));
+            for (let cb of this.afterEach) {
+                afterEach(this.instance[cb].bind(this.instance));
             }
             for (let [description, methodName] of this.tests) {
                 test(description, this.instance[methodName].bind(this.instance));
@@ -77,19 +81,19 @@ function Test(target, propertyKey, descriptor) {
 }
 exports.Test = Test;
 function Setup(target, propertyKey, descriptor) {
-    TestContainer.getInstance().setIfNotExists(target.constructor).get(target.constructor).setBeforeEach(propertyKey);
+    TestContainer.getInstance().setIfNotExists(target.constructor).get(target.constructor).addBeforeEach(propertyKey);
 }
 exports.Setup = Setup;
 function Teardown(target, propertyKey, descriptor) {
-    TestContainer.getInstance().setIfNotExists(target.constructor).get(target.constructor).setAfterEach(propertyKey);
+    TestContainer.getInstance().setIfNotExists(target.constructor).get(target.constructor).addAfterEach(propertyKey);
 }
 exports.Teardown = Teardown;
 function SuiteSetup(target, propertyKey, descriptor) {
-    TestContainer.getInstance().setIfNotExists(target.constructor).get(target.constructor).setBeforeAll(propertyKey);
+    TestContainer.getInstance().setIfNotExists(target.constructor).get(target.constructor).addBeforeAll(propertyKey);
 }
 exports.SuiteSetup = SuiteSetup;
 function SuiteTeardown(target, propertyKey, descriptor) {
-    TestContainer.getInstance().setIfNotExists(target.constructor).get(target.constructor).setAfterAll(propertyKey);
+    TestContainer.getInstance().setIfNotExists(target.constructor).get(target.constructor).addAfterAll(propertyKey);
 }
 exports.SuiteTeardown = SuiteTeardown;
 

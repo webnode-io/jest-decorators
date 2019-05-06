@@ -1,6 +1,6 @@
 {
   "name": "jest-decorators",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "A group of class decorators to provide declarative testing based on jest",
   "main": "dist/jest-decorators.js",
   "engines": {
@@ -14,10 +14,7 @@
     "name": "Wang Tong",
     "email": "itulayangi@outlook.com"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/webnode-io/jest-decorators/LICENSE"
-  },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/webnode-io/jest-decorators.git"

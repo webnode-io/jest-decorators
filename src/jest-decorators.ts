@@ -7,10 +7,10 @@ class TestSuite {
   private description: string
   private instance: InstanceType<ClassType>
   private tests: Array<[string, PropertyKey]> = []
-  private beforeEach: PropertyKey
-  private afterEach: PropertyKey
-  private beforeAll: PropertyKey
-  private afterAll: PropertyKey
+  private beforeEach: Array<PropertyKey> = []
+  private afterEach: Array<PropertyKey> = []
+  private beforeAll: Array<PropertyKey> = []
+  private afterAll: Array<PropertyKey> = []
 
   constructor(private classType: ClassType) {
     this.instance = new classType()
@@ -28,35 +28,47 @@ class TestSuite {
     this.tests.push([description, methodName])
   }
 
-  public setBeforeEach(methodName: PropertyKey) {
-    this.beforeEach = methodName
+  public addBeforeEach(methodName: PropertyKey) {
+    this.beforeEach.push(methodName)
   }
 
-  public setAfterEach(methodName: PropertyKey) {
-    this.afterEach = methodName
+  public addAfterEach(methodName: PropertyKey) {
+    this.afterEach.push(methodName)
   }
 
-  public setBeforeAll(methodName: PropertyKey) {
-    this.beforeAll = methodName
+  public addBeforeAll(methodName: PropertyKey) {
+    this.beforeAll.push(methodName)
   }
 
-  public setAfterAll(methodName: PropertyKey) {
-    this.afterAll = methodName
+  public addAfterAll(methodName: PropertyKey) {
+    this.afterAll.push(methodName)
   }
 
   public exec() {
     describe(this.description, () => {
-      if (this.beforeAll !== undefined) {
-        beforeAll(this.instance[this.beforeAll].bind(this.instance))
+      // if (this.beforeAll !== undefined) {
+      //   beforeAll(this.instance[this.beforeAll].bind(this.instance))
+      // }
+      // if (this.afterAll !== undefined) {
+      //   afterAll(this.instance[this.afterAll].bind(this.instance))
+      // }
+      // if (this.beforeEach !== undefined) {
+      //   beforeEach(this.instance[this.beforeEach].bind(this.instance))
+      // }
+      // if (this.afterEach !== undefined) {
+      //   afterEach(this.instance[this.afterEach].bind(this.instance))
+      // }
+      for (let cb of this.beforeAll) {
+        beforeAll(this.instance[cb].bind(this.instance))
       }
-      if (this.afterAll !== undefined) {
-        afterAll(this.instance[this.afterAll].bind(this.instance))
+      for (let cb of this.afterAll) {
+        afterAll(this.instance[cb].bind(this.instance))
       }
-      if (this.beforeEach !== undefined) {
-        beforeEach(this.instance[this.beforeEach].bind(this.instance))
+      for (let cb of this.beforeEach) {
+        beforeEach(this.instance[cb].bind(this.instance))
       }
-      if (this.afterEach !== undefined) {
-        afterEach(this.instance[this.afterEach].bind(this.instance))
+      for (let cb of this.afterEach) {
+        afterEach(this.instance[cb].bind(this.instance))
       }
       for (let [description, methodName] of this.tests) {
         test(description, this.instance[methodName].bind(this.instance))
@@ -99,17 +111,17 @@ export function Test(target: Object, propertyKey: string, descriptor: PropertyDe
 }
 
 export function Setup(target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
-  TestContainer.getInstance().setIfNotExists(target.constructor as ClassType).get(target.constructor as ClassType).setBeforeEach(propertyKey)
+  TestContainer.getInstance().setIfNotExists(target.constructor as ClassType).get(target.constructor as ClassType).addBeforeEach(propertyKey)
 }
 
 export function Teardown(target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
-  TestContainer.getInstance().setIfNotExists(target.constructor as ClassType).get(target.constructor as ClassType).setAfterEach(propertyKey)
+  TestContainer.getInstance().setIfNotExists(target.constructor as ClassType).get(target.constructor as ClassType).addAfterEach(propertyKey)
 }
 
 export function SuiteSetup(target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
-  TestContainer.getInstance().setIfNotExists(target.constructor as ClassType).get(target.constructor as ClassType).setBeforeAll(propertyKey)
+  TestContainer.getInstance().setIfNotExists(target.constructor as ClassType).get(target.constructor as ClassType).addBeforeAll(propertyKey)
 }
 
 export function SuiteTeardown(target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
-  TestContainer.getInstance().setIfNotExists(target.constructor as ClassType).get(target.constructor as ClassType).setAfterAll(propertyKey)
+  TestContainer.getInstance().setIfNotExists(target.constructor as ClassType).get(target.constructor as ClassType).addAfterAll(propertyKey)
 }
